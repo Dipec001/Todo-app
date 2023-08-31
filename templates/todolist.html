@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+<body>
+
+    <h1>{{ todolist.title }}</h1>
+    
+
+    <div class="row justify-content-between">
+        <form action="{% url 'todolist:add_todo' %}" method="POST">
+            {% csrf_token %}
+            <div class="input-container">
+                {% if not todos %}
+                <input type="hidden" name="todolist_id" value="{{ todolist.id }}">
+                <input class="input-field" placeholder="Type here e.g. buy bacon" type="text" name="title">
+                {% else %}
+                <input type="hidden" name="todolist_id" value="{{ todolist.id }}">
+                <input class="input-field" placeholder="Write your next task here..." type="text" name="title">
+                {% endif %}
+            </div>
+            <button type="submit">Add Todo</button>
+        </form>
+    </div>
+
+    <!-- Displaying the todos associated with the todo list -->
+    {% if todos %}
+        <ul>
+            {% for todo in todos %}
+                <li>{{ todo.title }}</li>
+                <a href="{% url 'todolist:delete_todo' todo.id %}" class="btn btn-danger">Delete</a>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No Todos found for this list.</p>
+    {% endif %}
+
+
+
+</body>
+</html>
