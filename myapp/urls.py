@@ -15,7 +15,7 @@ urlpatterns = [
     path('manage_lists', views.manage_lists, name='manage_lists'),
     path('todolist/<int:todolist_id>', views.todolist_detail, name='todolist_detail'),
     path('create_todolist/', views.create_todolist, name='create_todolist'),
-    path('delete_todo/<int:todo_id>/', views.delete_todo, name='delete_todo'),
+    path('delete_todo/<int:todolist_id>/<int:todo_id>/', views.delete_todo, name='delete_todo'),
     path('update_todolist_title/<int:todolist_id>/', views.update_todolist_title, name='update_todolist_title'),
     path('delete_todolist/<int:todolist_id>/', views.delete_todolist, name='delete_todolist'),
 ]

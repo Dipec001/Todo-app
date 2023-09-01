@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -218,17 +222,45 @@ h5.error {
   outline: none;
   padding: 30px 10px;
   font-size: 50px;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
 }
 .input-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .input-field::placeholder {
   font-size: 50px; /* Adjust the font size as needed */
+}
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .input-field::placeholder {
+        font-size: 30px; /* Adjust the font size for smaller screens */
+    }
 }
 .profile {
   text-decoration: none;
   color: white;
   padding-right: 10px;
 }
+
+.todo-item .row {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping of the entire row */
+    align-items: flex-start; /* Vertically align items at the top of the row */
+}
+
+.todo-item .col:first-child {
+    flex: 1; /* Allow the first column to grow and shrink */
+    overflow: hidden; /* Hide overflow content */
+    word-wrap: break-word; /* Wrap words if they are too long */
+}
+
+.todo-item .col:last-child {
+    flex: none; /* Prevent the second column from growing or shrinking */
+    margin-left: 10px; /* Add some space between columns */
+}
+
 

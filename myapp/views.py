@@ -119,7 +119,11 @@ def add_todo(request):
                 request.session.modified = True
                 messages.success(request, "Great, we've created a list for you. You should save your list so you don't forget it.")
 
-        return redirect('todolist:index')
+        # Redirect to the same todo list page
+        if todolist_id:
+            return redirect('todolist:todolist_detail', todolist_id=todolist_id)
+        else:
+            return redirect('todolist:index')
     return HttpResponse("Invalid request")
 
 def delete_session_todo(request, index):
@@ -194,16 +198,19 @@ def create_todolist(request):
     user = request.user
     todo_list = TodoList.objects.create(title="New Todo List", user=user)
     messages.success(request, "New TodoList created successfully.")
-    return redirect('todolist:manage_lists')
+    
+    # Redirect to the page inside the particular TodoList
+    return redirect('todolist:todolist_detail', todolist_id=todo_list.id)
 
 
-def delete_todo(request, todo_id):
+def delete_todo(request, todo_id, todolist_id):
     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
     
     todo.delete()
     messages.success(request, "Todo deleted successfully.")
 
-    return redirect('todolist:index')  # Redirect back to the todos page
+    # Redirect back to the todos page within the specified todolist
+    return redirect('todolist:todolist_detail', todolist_id=todolist_id)
 
 def update_todolist_title(request, todolist_id):
     todolist = get_object_or_404(TodoList, id=todolist_id, user=request.user)
