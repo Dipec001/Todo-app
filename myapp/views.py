@@ -22,10 +22,10 @@ def register(request):
         if password == password2:
             if User.objects.filter(email=email).exists():
                 messages.info(request, 'Email Already used')
-                return redirect('register')
+                return redirect('todolist:register')
             elif User.objects.filter(username=username).exists():
                 messages.info(request, 'Username already taken')
-                return redirect('register')
+                return redirect('todolist:register')
             else:
                 user = User.objects.create_user(username=username,email=email,password=password)
 
@@ -48,10 +48,10 @@ def register(request):
                 
                 
                 messages.success(request, 'Registration successful. You can now log in.')
-                return redirect('login')
+                return redirect('todolist:login')
         else:
             messages.info(request, 'Password Not The Same')
-            return redirect('register')
+            return redirect('todolist:register')
 
     return render(request,'register.html')
 
@@ -83,7 +83,7 @@ def login(request):
             return redirect('/')
         else:
             messages.info(request, "Invalid email or password")
-            return redirect('login')
+            return redirect('todolist:login')
 
     return render(request, 'login.html')
 
