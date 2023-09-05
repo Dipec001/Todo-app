@@ -180,7 +180,7 @@ def profile(request):
 
     return render(request, 'profile.html', {'user': user})
 
-
+@login_required
 def manage_lists(request):
     user = request.user
     todolists = TodoList.objects.filter(user=user)
@@ -193,7 +193,7 @@ def todolist_detail(request, todolist_id):
     context = {'todolist': todolist, 'todos': todos}
     return render(request, 'todolist.html', context)
 
-
+@login_required
 def create_todolist(request):
     user = request.user
     todo_list = TodoList.objects.create(title="New Todo List", user=user)
@@ -224,9 +224,33 @@ def update_todolist_title(request, todolist_id):
 
     return render(request, 'manage_lists.html')  # Render the same template if not a POST request
 
+@login_required
 def delete_todolist(request, todolist_id):
     todolist = get_object_or_404(TodoList, id=todolist_id, user=request.user)
 
     if request.method == 'POST':
         todolist.delete()
         return redirect('todolist:manage_lists')
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = User.objects.filter(email=email).first()
+
+        if user:
+            if new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'Password reset successful. You can now log in with your new password.')
+                return redirect('todolist:login')
+            else:
+                messages.error(request, 'Password and confirm password do not match.')
+        else:
+            messages.error(request, 'Email not found. Please enter a valid email address.')
+    else:
+
+        return render(request, 'forgot_password.html')

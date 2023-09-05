@@ -46,7 +46,7 @@
                   <div class="modal-dialog">
                   <div class="modal-content">
                       <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">New List</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -73,7 +73,7 @@
 
         </div>
     </div>   
-    {% if not todos %}
+    {% if not request.session.todos %}
     <div class="third">
         <div class="row justify-content-between">
             <h3 class="text-sm">Create your todo list below</h3>
@@ -99,7 +99,7 @@
         <form action="{% url 'todolist:add_todo' %}" method="POST">
             {% csrf_token %}
             <div class="input-container">
-                {% if not todos %}
+                {% if not request.session.todos %}
                 <input type="hidden" name="todolist_id" value="{{ todolist.id }}">
                 <input class="input-field" placeholder="Type here e.g. buy bacon" type="text" name="title" >
                 {% else %}
