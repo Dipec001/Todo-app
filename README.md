@@ -1,11 +1,12 @@
 # Django Todo App
 
-![App Screenshot](screenshot.png)
+
+![Screenshot 2023-09-05 214416](https://github.com/Dipec001/Todo-app/assets/119022956/a27f8a99-9811-4798-9aa5-948837e4494c)
 
 A simple Django-based Todo App for managing your tasks.
 
 - **Live Demo**: [Django Todo App](https://todo-b4qi.onrender.com)
-- **Author**: [Your Name](https://github.com/dipec001)
+- **Author**: [Dipec](https://github.com/dipec001)
 
 ## Features
 
