@@ -19,4 +19,5 @@ urlpatterns = [
     path('update_todolist_title/<int:todolist_id>/', views.update_todolist_title, name='update_todolist_title'),
     path('delete_todolist/<int:todolist_id>/', views.delete_todolist, name='delete_todolist'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
+    path('update_todo/<int:todo_id>/', views.update_todo, name='update_todo'),
 ]

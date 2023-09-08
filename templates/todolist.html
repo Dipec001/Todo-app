@@ -108,24 +108,81 @@
     </div>
 
     <!-- Displaying the todos associated with the todo list -->
-    {% if todos %}
-    {% for todo in todos %}
-    <div class="todo-item">
-        <div class="row align-items-center">
-            <div class="col ml-2">
-                <h2>{{ todo.title }}</h2>
-            </div>
-            <div class="col-auto mr-2">
-                <a href="{% url 'todolist:delete_todo' todolist_id=todo.todolist.id todo_id=todo.id %}"  class="btn btn-danger">Delete</a>
-            </div>
-        </div>
+    <div id="todo-list-container">
+        {% if todos %}
+            {% for todo in todos %}
+            <form method="post" action="{% url 'todolist:update_todo' todo_id=todo.id %}">
+                {% csrf_token %}
+                <div class="todo-item">
+                    <div class="row align-items-center">
+                        <div class="col ml-2">
+                            <input type="checkbox" class="strikethroughCheckbox" name="is_checked" {% if todo.is_checked %}checked{% endif %}
+                                   data-todo-id="{{ todo.id }}">
+                            <label class="todo-label" {% if todo.is_checked %}style="text-decoration: line-through;"{% endif %}>
+                                {{ todo.title }}
+                            </label>
+                        </div>
+                        <div class="col-auto mr-2">
+                            <a href="{% url 'todolist:delete_todo' todolist_id=todo.todolist.id todo_id=todo.id %}"
+                               class="btn btn-danger del">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% endfor %}
+        {% else %}
+            <p>No Todos found for this list.</p>
+        {% endif  %}
     </div>
-    {% endfor %}
-    {% else %}
-        <p>No Todos found for this list.</p>
-    {% endif %}
+    
+
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const checkboxes = document.querySelectorAll('.strikethroughCheckbox');
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            console.log('Checkbox changed');
+            const label = this.nextElementSibling; // Assuming the label is the next sibling element
+
+            if (checkbox.checked) {
+                label.style.textDecoration = 'line-through';
+            } else {
+                label.style.textDecoration = 'none';
+            }
+
+            // Use AJAX to update the database
+            const todoId = this.getAttribute('data-todo-id');
+            const url = `/update_todo/${todoId}/`; // Construct the URL
+            const isChecked = this.checked.toString(); // Convert boolean to string
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            console.log('Sending AJAX request with data:', JSON.stringify({ is_checked: isChecked }));
 
 
+            fetch(`/update_todo/${todoId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ is_checked: isChecked }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+});
+
+</script>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

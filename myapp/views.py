@@ -254,3 +254,16 @@ def forgot_password(request):
     else:
 
         return render(request, 'forgot_password.html')
+    
+
+def update_todo(request, todo_id):
+    todo = Todo.objects.get(id=todo_id)
+    is_checked = request.POST.get('is_checked')  # Retrieve the is_checked value from the POST data
+    if request.method == 'POST':
+        if todo.is_checked :
+
+            todo.is_checked = False
+        else:
+            todo.is_checked = True
+        todo.save()
+    

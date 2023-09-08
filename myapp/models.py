@@ -15,3 +15,4 @@ class Todo(models.Model):
     due_date = models.DateField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
+    is_checked = models.BooleanField(default=False)
